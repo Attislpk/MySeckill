@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seckill.dao.SeckillDetailDao">
+<!--两张表内连接查询，"对象.属性"的方式取出引用的对象中的数据-->
+    <select id="queryByIdAndPhone" parameterType="long" resultType="SeckillDetail">
+        select sd.seckill_id,
+               sd.user_phone,
+               sd.create_time,
+               sd.state,
+               s.seckill_id "seckill.seckill_id",
+               s.name "seckill.name",
+               s.number "seckill.number",
+               s.create_time "seckill.create_time",
+               s.start_time "seckill.start_time",
+               s.end_time "seckill.end_time"
+        from seckill_detail sd inner join seckill s on sd.seckill_id = s.seckill_id where sd.seckill_id = #{seckillId} and
+        sd.user_phone = #{userPhone};
+    </select>
+
+    <!--忽略主键冲突报错ignore-->
+    <insert id="insertDetail">
+        insert ignore into seckill_detail(seckill_id, user_phone) values(#{seckillId}, #{userPhone});
+    </insert>
+
+</mapper>
